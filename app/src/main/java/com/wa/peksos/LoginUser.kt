@@ -48,7 +48,7 @@ class LoginUser : AppCompatActivity() {
         }
 
         binding.textView.setOnClickListener{
-            val intent = Intent(this, RegisterActivity::class.java)
+            val intent = Intent(this, RegisterAdmin::class.java)
             startActivity(intent)
         }
     }
