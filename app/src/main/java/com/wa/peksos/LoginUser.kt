@@ -25,20 +25,25 @@ class LoginUser : AppCompatActivity() {
             val email = binding.etEmail.text.toString()
             val pass = binding.etPassword.text.toString()
 
-            if (email.isNotEmpty() && pass.isNotEmpty()){
-                firebaseAuth.signInWithEmailAndPassword(email,pass).addOnCompleteListener {
-                    if(it.isSuccessful){
-                        val intent = Intent(this, MenuUtama::class.java)
-                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                        startActivity(intent)
+            if (email.isNotEmpty()){
+                if (pass.isNotEmpty()){
+                    firebaseAuth.signInWithEmailAndPassword(email,pass).addOnCompleteListener {
+                        if(it.isSuccessful){
+                            val intent = Intent(this, MenuUtamaUser::class.java)
+                            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                            startActivity(intent)
+                        }
+                        else{
+                            Toast.makeText(this, it.exception.toString(), Toast.LENGTH_LONG).show()
+                        }
                     }
-                    else{
-                        Toast.makeText(this, it.exception.toString(), Toast.LENGTH_LONG).show()
-                    }
+                }
+                else{
+                    binding.etPassword.error = "Masukkan Password"
                 }
             }
             else{
-                Toast.makeText(this, "Isi seluruh field yang ada!", Toast.LENGTH_LONG).show()
+                binding.etEmail.error = "Masukkan E-mail"
             }
         }
 

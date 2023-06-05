@@ -16,10 +16,11 @@ class LoginAdmin : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         binding = ActivityLoginAdminBinding.inflate(layoutInflater)
-        setContentView(R.layout.activity_login_admin)
+        setContentView(binding.root)
         supportActionBar?.hide()
 
         firebaseAuth = FirebaseAuth.getInstance()
+
         binding.btnLoginAdmin.setOnClickListener {
             val email = binding.etEmail.text.toString()
             val pass = binding.etPassword.text.toString()
@@ -28,7 +29,7 @@ class LoginAdmin : AppCompatActivity() {
                 if (pass.isNotEmpty()){
                     firebaseAuth.signInWithEmailAndPassword(email, pass).addOnCompleteListener {
                         if(it.isSuccessful){
-                            val intent = Intent(this, MenuUtama::class.java)
+                            val intent = Intent(this, MenuUtamaAdmin::class.java)
                             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                             startActivity(intent)
                         }
