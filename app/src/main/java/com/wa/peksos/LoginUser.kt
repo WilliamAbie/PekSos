@@ -52,4 +52,14 @@ class LoginUser : AppCompatActivity() {
             startActivity(intent)
         }
     }
+
+    override fun onStart() {
+        super.onStart()
+
+        if (firebaseAuth.currentUser != null){
+            val intent = Intent(this, MenuUtamaUser::class.java)
+            startActivity(intent)
+            finish()
+        }
+    }
 }
