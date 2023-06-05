@@ -41,5 +41,10 @@ class LoginUser : AppCompatActivity() {
                 Toast.makeText(this, "Isi seluruh field yang ada!", Toast.LENGTH_LONG).show()
             }
         }
+
+        binding.textView.setOnClickListener{
+            val intent = Intent(this, RegisterActivity::class.java)
+            startActivity(intent)
+        }
     }
 }
