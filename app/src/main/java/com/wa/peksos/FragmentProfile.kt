@@ -13,6 +13,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.storage.FirebaseStorage
 import de.hdodenhof.circleimageview.CircleImageView
@@ -31,7 +32,7 @@ class FragmentProfile : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_profile, container, false)
-
+        (activity as AppCompatActivity).supportActionBar?.hide()
         val btnLogout = view.findViewById<Button>(R.id.btnLogout)
         btnLogout.setOnClickListener {
             FirebaseAuth.getInstance().signOut()
@@ -46,6 +47,7 @@ class FragmentProfile : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         val ivProfile : CircleImageView = view.findViewById(R.id.ivProfile)
         val tvEmail : TextView = view.findViewById(R.id.tvEmail)
         val tvUid : TextView = view.findViewById(R.id.tvUid)

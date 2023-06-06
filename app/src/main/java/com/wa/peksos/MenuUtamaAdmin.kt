@@ -16,7 +16,7 @@ class MenuUtamaAdmin : AppCompatActivity() {
         setContentView(binding.root)
         replaceFragment(FragmentHomeAdmin())
 
-        binding.bottomNav.setOnItemSelectedListener {
+        binding.bottomNavAdmin.setOnItemSelectedListener {
             when (it.itemId){
                 R.id.home -> replaceFragment(FragmentHomeAdmin())
                 R.id.profile -> replaceFragment(FragmentProfile())
