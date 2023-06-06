@@ -24,7 +24,6 @@ class MenuUtamaAdmin : AppCompatActivity() {
 
             true
         }
-
     }
     private fun replaceFragment(fragment: Fragment){
         val fragmentManager = supportFragmentManager
