@@ -16,6 +16,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.storage.FirebaseStorage
+import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
 import java.io.ByteArrayOutputStream
 
@@ -25,6 +26,7 @@ class FragmentProfile : Fragment() {
         const val REQUEST_CAMERA = 100
     }
     private lateinit var imageUri : Uri
+    private lateinit var firebaseStorage: FirebaseStorage
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -55,6 +57,13 @@ class FragmentProfile : Fragment() {
         tvEmail.text = FirebaseAuth.getInstance().currentUser?.email.toString()
         tvUid.text = FirebaseAuth.getInstance().currentUser?.uid.toString()
 
+        firebaseStorage = FirebaseStorage.getInstance()
+        val imageRef = firebaseStorage.reference.child("/img/${FirebaseAuth.getInstance().currentUser?.uid}")
+        imageRef.downloadUrl.addOnSuccessListener {
+                uri -> val imageUrl = uri.toString()
+            Picasso.get().load(imageUrl).into(ivProfile)
+        }
+
         ivProfile.setOnClickListener{
             intentCamera()
         }
@@ -80,8 +89,7 @@ class FragmentProfile : Fragment() {
 
     private fun uploadImage(imgBitmap: Bitmap) {
         val baos = ByteArrayOutputStream()
-        val ref = FirebaseStorage.getInstance()
-            .reference.child("/img/${FirebaseAuth.getInstance().currentUser?.uid}")
+        val ref = FirebaseStorage.getInstance().reference.child("/img/${FirebaseAuth.getInstance().currentUser?.uid}")
 
         imgBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
         val image = baos.toByteArray()

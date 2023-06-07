@@ -6,16 +6,22 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.DatePicker
-import android.widget.ImageView
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.storage.FirebaseStorage
+import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
 import java.util.Calendar
 
 class FragmentHome : Fragment() {
+
+    private lateinit var firebaseDatabase: FirebaseDatabase
+    private lateinit var firebaseAuth: FirebaseAuth
+    private lateinit var firebaseStorage: FirebaseStorage
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -28,10 +34,13 @@ class FragmentHome : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         (activity as AppCompatActivity).supportActionBar?.hide()
 
+        val tvDay = view.findViewById<TextView>(R.id.tvDay)
+        tvDay.text = Calendar.getInstance().get(Calendar.DAY_OF_MONTH).toString()
+
         val tvMonth = view.findViewById<TextView>(R.id.tvMonth)
         val month = Calendar.getInstance().get(Calendar.MONTH) + 1
 
-        if (month == 1){
+        if (month == 1){ // kondisi untuk mengubah integer bulan menjadi string
             tvMonth.text = "Januari"
         }
         else if (month == 2){
@@ -68,22 +77,73 @@ class FragmentHome : Fragment() {
             tvMonth.text = "Desember"
         }
 
-        val tvEmail = view.findViewById<TextView>(R.id.tvEmail)
+        val tvEmail = view.findViewById<TextView>(R.id.tvEmail) // mengubah value email
         tvEmail.text = FirebaseAuth.getInstance().currentUser?.email.toString()
 
-        val ivProfile = view.findViewById<CircleImageView>(R.id.ivProfile)
-        ivProfile.setOnClickListener {
+        val ivProfile = view.findViewById<CircleImageView>(R.id.ivProfile) // mengambil data image dari storage dan post ke gambar profil
+        firebaseStorage = FirebaseStorage.getInstance()
+        val imageRef = firebaseStorage.reference.child("/img/${FirebaseAuth.getInstance().currentUser?.uid}")
+        imageRef.downloadUrl.addOnSuccessListener {
+            uri -> val imageUrl = uri.toString()
+            Picasso.get().load(imageUrl).into(ivProfile)
+        }
+        ivProfile.setOnClickListener { // membuat aksi perpindahan saat foto profil ditekan
             val fragment = FragmentProfile()
             val transaction = fragmentManager?.beginTransaction()
-
             transaction?.replace(R.id.fragmentLayout, fragment)?.commit()
         }
 
-        val calendarButton = view.findViewById<ImageView>(R.id.ivCalendar)
-
+        val calendarButton = view.findViewById<ImageView>(R.id.ivCalendar) // aksi saat menekan icon kalendar diatas
         calendarButton.setOnClickListener {
             showDatePickerDialog()
         }
+
+        val tvJadwal = view.findViewById<TextView>(R.id.tvJadwal)
+        firebaseDatabase = FirebaseDatabase.getInstance()
+        firebaseDatabase.getReference("kunjungan")
+            .child("${FirebaseAuth.getInstance().currentUser?.uid}").get().addOnSuccessListener {
+            if (it.exists()){
+                tvJadwal.text = it.value.toString()
+            }
+        }
+
+        val btnTanggal = view.findViewById<Button>(R.id.btnTanggal) // edit tanggal kunjungan
+        btnTanggal.setOnClickListener {
+            showDatePicker()
+        }
+    }
+
+    private fun showDatePicker(){
+        val calendar = Calendar.getInstance()
+        val initialYear = calendar.get(Calendar.YEAR)
+        val initialMonth = calendar.get(Calendar.MONTH)
+        val initialDay = calendar.get(Calendar.DAY_OF_MONTH)
+
+        firebaseDatabase = FirebaseDatabase.getInstance()
+        firebaseAuth = FirebaseAuth.getInstance()
+
+        val ref = firebaseDatabase.getReference("kunjungan")
+        val userId = firebaseAuth.currentUser?.uid
+        val datePickerDialog = DatePickerDialog(
+            requireContext(), { _: DatePicker, year: Int, month: Int, dayOfMonth: Int ->
+                val selectedDate = formatDate(year, month, dayOfMonth)
+                val tvJadwal = view?.findViewById<TextView>(R.id.tvJadwal)
+                tvJadwal?.text = selectedDate
+                if (userId != null) {
+                    ref.child(userId).setValue("${selectedDate}")
+                }
+                makeToast("Tanggal berhasil ditetapkan! Pantau selalu jadwal kunjungan anda")
+            }, initialYear, initialMonth, initialDay)
+
+        datePickerDialog.datePicker.minDate = calendar.timeInMillis
+        datePickerDialog.show()
+    }
+
+    private fun formatDate(year: Int, month: Int, day: Int): String {
+        val calendar = Calendar.getInstance()
+        calendar.set(year, month, day)
+        val dateFormat = android.text.format.DateFormat.getDateFormat(requireContext())
+        return dateFormat.format(calendar.time)
     }
 
     private fun showDatePickerDialog(){
@@ -96,5 +156,11 @@ class FragmentHome : Fragment() {
             requireContext(), { _: DatePicker, year: Int, month: Int, dayOfMonth: Int -> }, initialYear, initialMonth, initialDay)
 
         datePickerDialog.show()
+    }
+
+    private fun Fragment.makeToast(text: String,duration: Int = Toast.LENGTH_LONG) {
+        activity?.let {
+            Toast.makeText(it, text, duration).show()
+        }
     }
 }
