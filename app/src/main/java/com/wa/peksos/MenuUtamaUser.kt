@@ -14,11 +14,11 @@ class MenuUtamaUser : AppCompatActivity() {
 
         binding = ActivityMenuUtamaUserBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        replaceFragment(FragmentHome())
+        replaceFragment(FragmentHomeUser())
 
         binding.bottomNavUser.setOnItemSelectedListener {
             when (it.itemId){
-                R.id.home -> replaceFragment(FragmentHome())
+                R.id.home -> replaceFragment(FragmentHomeUser())
                 R.id.profile -> replaceFragment(FragmentProfile())
             }
 
