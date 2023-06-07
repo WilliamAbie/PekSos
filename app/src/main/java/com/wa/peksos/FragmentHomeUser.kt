@@ -11,6 +11,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.cardview.widget.CardView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
@@ -108,9 +109,9 @@ class FragmentHomeUser : Fragment() {
             showDatePicker()
         }
 
-        val ivCatatan = view.findViewById<CircleImageView>(R.id.ivCatatan)
-        ivCatatan.setOnClickListener {
-            val fragment = FragmentCatatan()
+        val cvCatatan = view.findViewById<CardView>(R.id.cvCatatan)
+        cvCatatan.setOnClickListener {
+            val fragment = FragmentCatatanUser()
             val transaction = fragmentManager?.beginTransaction()
             transaction?.replace(R.id.fragmentLayout, fragment)?.commit()
         }

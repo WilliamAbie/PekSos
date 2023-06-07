@@ -7,6 +7,21 @@
     tools:context=".StarterMenu">
 
     <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/icon_bulat" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="0dp"
+        android:layout_marginBottom="0dp"
+        android:rotation="180"
+        android:src="@drawable/icon_bulat" />
+
+    <ImageView
         android:id="@+id/icon_beranda"
         android:layout_width="235dp"
         android:layout_height="200dp"

@@ -4,7 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".FragmentCatatan">
+    tools:context=".FragmentCatatanUser">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/appCompatImageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:rotation="180"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/icon_bulat" />
 
     <LinearLayout
         android:id="@+id/linearLayout1"
@@ -20,6 +29,7 @@
             android:background="#f5ca7b">
 
             <ImageView
+                android:id="@+id/ivBack"
                 android:layout_width="30dp"
                 android:layout_height="match_parent"
                 android:src="@drawable/ic_back"
@@ -36,7 +46,7 @@
                 android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.41"
+                app:layout_constraintHorizontal_bias="0.45"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -49,7 +59,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintHorizontal_bias="0.55"
+                app:layout_constraintHorizontal_bias="0.53"
                 app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -82,7 +92,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/ivRiang"
+                android:id="@+id/ivHappy"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:layout_marginStart="10dp"
@@ -98,9 +108,9 @@
                 android:text="Riang"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/ivRiang"
-                app:layout_constraintStart_toStartOf="@+id/ivRiang"
-                app:layout_constraintTop_toBottomOf="@+id/ivRiang" />
+                app:layout_constraintEnd_toEndOf="@+id/ivHappy"
+                app:layout_constraintStart_toStartOf="@+id/ivHappy"
+                app:layout_constraintTop_toBottomOf="@+id/ivHappy" />
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/ivAngry"
@@ -219,6 +229,7 @@
                     android:background="#e0e0e0">
 
                     <EditText
+                        android:id="@+id/etCatatan"
                         android:layout_margin="8dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -235,6 +246,7 @@
             </androidx.cardview.widget.CardView>
 
             <Button
+                android:id="@+id/btnSubmitCatatan"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_margin="20dp"

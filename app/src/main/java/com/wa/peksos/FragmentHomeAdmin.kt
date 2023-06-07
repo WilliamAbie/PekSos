@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.cardview.widget.CardView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
@@ -103,6 +104,12 @@ class FragmentHomeAdmin : Fragment() {
             val email = etEmail.text.toString()
             val safeEmail = email.replace(".",",")
             showDatePicker(safeEmail)
+        }
+
+        val cvCatatan = view.findViewById<CardView>(R.id.cvCatatan)
+        cvCatatan.setOnClickListener{
+            val transaction = fragmentManager?.beginTransaction()
+            transaction?.replace(R.id.fragmentLayout, FragmentCatatanAdmin())?.commit()
         }
     }
 
